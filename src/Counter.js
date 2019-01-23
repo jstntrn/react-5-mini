@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { increment, decrement, undo, redo } from './ducks/counter';
+import { increment, decrement, undo, redo } from './ducks/counter'; //import action functions
 
 class Counter extends Component {
   render() {
 
-    //destructure props into values
+    //destructure state and functions from counter into variables
     const { currentValue, increment, decrement, futureValues, previousValues, undo, redo } = this.props;
 
     //invoke increment and decrement in arrow function for onClick event handler with the amount being passed in as a parameter
@@ -42,8 +42,8 @@ class Counter extends Component {
             <br />
             <button
               className="counter__button undo"
-              disabled={previousValues === 0}
-              onClick={undo}
+              disabled={previousValues.length === 0} //disables button if length of previousValues array equals 0, because you can't undo when there is now value to call
+              onClick={undo} //undo and redo do not take in parameters
             >
               Undo
             </button>

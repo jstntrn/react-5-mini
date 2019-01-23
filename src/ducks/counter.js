@@ -18,9 +18,9 @@ export default function counter( state = initialState, action ) {
     switch(action.type) {
         case INCREMENT:
             return {
-                currentValue: state.currentValue + action.amount,
-                futureValues: [],
-                previousValues: [state.currentValue, ...state.previousValues]
+                currentValue: state.currentValue + action.amount, //increments current value by amount set in parameter
+                futureValues: [], //resets future value to an empty array to milestone the current value
+                previousValues: [state.currentValue, ...state.previousValues] //log current value with previous array
             };
         case DECREMENT:
             return {
@@ -30,15 +30,15 @@ export default function counter( state = initialState, action ) {
             };
         case UNDO:
             return {
-                currentValue: state.previousValues[0],
-                futureValues: [state.currentValue, ...state.futureValues],
-                previousValues: state.previousValues.slice(1)
+                currentValue: state.previousValues[0], //Undo has us go back to the first element in the previous array
+                futureValues: [state.currentValue, ...state.futureValues], //it logs the current value in futureValues incase redo is used
+                previousValues: state.previousValues.slice(1) //sends back a new array without the first element
             };
         case REDO:
             return {
-                currentValue: state.currentValue,
-                futureValues: state.previousValues.slice(1),
-                previousValues: [state.currentValue, ...state.previousValues]
+                currentValue: state.futureValues[0], //Redo has us go forward after going back from an undo action, thus setting the currentValue to the first element in the future log array
+                futureValues: state.futureValues.slice(1), //returns new array without the first element
+                previousValues: [state.currentValue, ...state.previousValues] //moves the current value to the previous array incase undo is clicked
             };
         //set default of switch to return state
         default:
